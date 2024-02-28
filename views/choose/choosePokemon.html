@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1">
+	<title>Choose One</title>
+	<!-- the form awesome library is used to add icons to our form -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	<!-- include the stylesheet file -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+	<link href="choose/choosePokemon.css" rel="stylesheet" type="text/css">
+	<script src="../../pokemon/javascripts/pokemon.js"></script>
+</head>
+
+<body>
+	<div class="login">
+		<h1>Choose one Pokemon to start</h1>
+		<form id="form" method="post" action="/pokemons/" name="formPoke">
+			<label>
+				<input type="radio" id="huey" name="pokemon" value=1>
+				<img src="choose/bulbizarre-200.png">
+			</label>
+			<label>
+				<input type="radio" id="huey" name="pokemon" value=4>
+				<img src="choose/salameche-200.png">
+			</label>
+			<label>
+				<input type="radio" id="huey" name="pokemon" value=7>
+				<img src="choose/carapuce-200.png">
+			</label>
+			<br>
+			<br>
+			<br>
+			<br>
+			<input type="button" value="Choose" onClick="checkChoosen(this.form)">
+		</form>
+	</div>
+</body>
+
+</html>
+<script>
+	function checkChoosen(form) {
+		var movePokemon = []
+		if (form.pokemon.value == "" || form.pokemon.value == null) {
+			alert("choose a pokemon !")
+		} else {
+			fetch('https://pokeapi.co/api/v2/pokemon/' + form.pokemon.value, {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+				},
+			})
+				.then(response => response.json())
+				.then(data => {
+					let movesData = data.moves.filter(mv => mv.version_group_details[0].level_learned_at > 0 && mv.version_group_details[0].level_learned_at < 5)
+					for (let i = 0; i < movesData.length; i++) {
+						fetch(movesData[i].move.url, {
+							method: 'GET',
+							headers: {
+								'Accept': 'application/json',
+							},
+						})
+							.then(response => response.json())
+							.then(moveData => {
+								let move = new Move(moveData.name, moveData.accuracy, moveData.pp, moveData.pp, moveData.id, moveData.priority, moveData.power)
+								movePokemon.push(move);
+								if (i == movesData.length - 1) {
+									let pokemon = new Pokemon(data.id, data.name, data.sprites.back_default,
+										data.sprites.front_default, 5, data.stats[1].base_stat, data.stats[3].base_stat,
+										data.stats[2].base_stat, data.stats[4].base_stat, data.stats[5].base_stat,
+										data.stats[0].base_stat, data.stats[0].base_stat, data.types[0].type.name,
+										movePokemon)
+									fetch('/pokemons/chooseFirst', {
+										headers: {
+											'Accept': 'application/json',
+											'Content-Type': 'application/json'
+										},
+										method: "POST",
+										body: JSON.stringify({ pokemon })
+
+									})
+										.then(response => {
+											if (response.redirected) {
+												window.location.href = response.url;
+											}
+										}).catch(function (err) {
+											console.info(err + " url: " + url);
+										});
+								}
+							})
+					}
+				})
+		}
+	}
+</script>
