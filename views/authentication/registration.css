@@ -1,0 +1,95 @@
+/* Import de la police rétro */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Style global */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #2c2f33; /* Couleur de fond sombre */
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('3pokemons.jpg'); /* Ajoute un fond thématique */
+    background-size: cover;
+}
+
+/* Conteneur principal */
+.login {
+    background-color: #c0c0c0; /* Couleur GameBoy Color */
+    border: 6px solid #000000;
+    border-radius: 20px;
+    padding: 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Titre */
+.login h1 {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
+}
+
+/* Boutons */
+button, input[type="submit"] {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #6ca0dc;
+    color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 10px 0;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #5488c7;
+    transform: scale(1.1);
+}
+
+/* Champs de formulaire */
+input[type="text"], input[type="password"], input[type="email"] {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 8px;
+    width: 90%;
+    margin-bottom: 10px;
+    font-size: 12px;
+    outline: none;
+    text-align: center;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    border-color: #6ca0dc;
+}
+
+/* Icônes */
+label i {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+/* Bouton radio */
+input[type="radio"] {
+    margin: 0 10px;
+    transform: scale(1.5);
+}
+
+/* Image Pokémon */
+.login img {
+    margin-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+    border: 3px solid #000000;
+}

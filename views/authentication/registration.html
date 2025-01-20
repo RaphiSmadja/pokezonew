@@ -11,45 +11,74 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="authentication/style.css" rel="stylesheet" type="text/css">
+    <link href="authentication/registration.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div class="login">
         <h1>Registration</h1>
-        <form action="/users/signup" method="post">
+        <form id="signup-form">
             <label for="firstname">
-                <!-- font awesome icon -->
                 <i class="fas fa-user"></i>
             </label>
-            <input type="text" name="firstname" placeholder="firstname" id="firstname" required><br><br>
+            <input type="text" name="firstname" placeholder="First Name" id="firstname" required>
             <label for="lastname">
-                <!-- font awesome icon -->
                 <i class="fas fa-user"></i>
             </label>
-            <input type="text" name="lastname" placeholder="lastname" id="lastname" required><br><br>
+            <input type="text" name="lastname" placeholder="Last Name" id="lastname" required>
             <label for="pseudo">
-                <!-- font awesome icon -->
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-tag"></i>
             </label>
-            <input type="text" name="pseudo" placeholder="pseudo" id="pseudo" required><br><br>
-            <input type="radio" id="man" name="gender" value='M'>
-            <label for="man">Male</label><br>
-            <input type="radio" id="female" name="gender" value='F'>
-            <label for="man">Female</label><br><br>
+            <input type="text" name="pseudo" placeholder="Pseudo" id="pseudo" required>
+            <div>
+                <label><input type="radio" name="gender" value="male"> Male</label>
+                <label><input type="radio" name="gender" value="female"> Female</label>
+            </div>
             <label for="email">
-                <!-- font awesome icon -->
-                <i class="fas fa-user"></i>
+                <i class="fas fa-envelope"></i>
             </label>
-            <input type="text" name="email" placeholder="mail@mail.fr" id="email" required>
-            <br><br>
+            <input type="email" name="email" placeholder="mail@mail.fr" id="email" required>
             <label for="password">
                 <i class="fas fa-lock"></i>
             </label>
-            <input type="password" name="password" placeholder="Password" id="password" required><br><br>
-            <input type="submit" value="Registration">
+            <input type="password" name="password" placeholder="Password" id="password" required>
+            <input type="submit" value="Register">
         </form>
+        <div id="message" style="color: red; margin-top: 10px;"></div>
     </div>
+    <script>
+        document.getElementById("signup-form").addEventListener("submit", async function (e) {
+            e.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/users/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                const result = await response.json();
+                if (result.msg === "NOK") {
+                    document.getElementById("message").innerText = result.result;
+                } else {
+                    document.getElementById("message").innerText = "Registration successful!";
+                    document.getElementById("message").style.color = "green";
+
+                    setTimeout(() => {
+                        window.location.href = '/'; 
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById("message").innerText = "An error occurred. Please try again.";
+                document.getElementById("message").style.color = "red";
+            }
+        });
+    </script>
 </body>
 
 </html>
